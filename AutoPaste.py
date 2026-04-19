@@ -76,13 +76,6 @@ def toggle_scales():
         seconds_frame.pack_forget()
         minutes_frame.pack()
 
-def format_minutes(value):
-    minutes = int(value)
-    if value % 1 == 0:
-        return f"{int(minutes)} мин"
-    else:
-        return f"{minutes} мин 30 сек"
-
 text_frame = Frame(root, bg="#1E1D1D")
 text_frame.pack(pady=10)
 
@@ -144,25 +137,19 @@ seconds_scale.pack()
 minutes_frame = Frame(scales_frame, bg="#1E1D1D")
 Label(minutes_frame, text="Интервал (минуты):", bg="#1E1D1D", fg="white").pack()
 
-minutes_scale = Scale(minutes_frame, from_=0.5, to=10, resolution=0.5, 
-                     orient=HORIZONTAL, length=300, bg="white")
+minutes_scale = Scale(minutes_frame, from_=1, to=60, orient=HORIZONTAL, 
+                      length=300, bg="white")
 minutes_scale.set(1)
-
-minutes_frame_lower = Frame(minutes_frame, bg="#1E1D1D")
-minutes_frame_lower.pack()
-for i in range(1, 11):
-    Label(minutes_frame_lower, text=str(i), bg="#1E1D1D", fg="white", font=("Arial", 8)).pack(side=LEFT, padx=12)
-
 minutes_scale.pack()
 
+minutes_labels_frame = Frame(minutes_frame, bg="#1E1D1D")
+minutes_labels_frame.pack()
+for i in [1, 10, 20, 30, 40, 50, 60]:
+    Label(minutes_labels_frame, text=str(i), bg="#1E1D1D", fg="white", font=("Arial", 8)).pack(side=LEFT, padx=20)
+
 def update_minutes_label(val):
-    val = float(val)
-    minutes = int(val)
-    seconds_part = 30 if val % 1 != 0 else 0
-    if seconds_part > 0:
-        minutes_label.config(text=f"Текущее: {minutes} мин {seconds_part} сек")
-    else:
-        minutes_label.config(text=f"Текущее: {minutes} мин 00 сек")
+    val = int(float(val))
+    minutes_label.config(text=f"Текущее: {val} мин 00 сек")
 
 minutes_scale.config(command=update_minutes_label)
 
